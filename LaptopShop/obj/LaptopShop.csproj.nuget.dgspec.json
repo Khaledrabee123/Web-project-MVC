@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sigma\\Downloads\\Web-Project-master\\Web-Project-master\\LaptopShop\\LaptopShop.csproj": {}
+    "C:\\Users\\sigma\\Downloads\\project\\LaptopShop\\LaptopShop.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sigma\\Downloads\\Web-Project-master\\Web-Project-master\\LaptopShop\\LaptopShop.csproj": {
+    "C:\\Users\\sigma\\Downloads\\project\\LaptopShop\\LaptopShop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sigma\\Downloads\\Web-Project-master\\Web-Project-master\\LaptopShop\\LaptopShop.csproj",
+        "projectUniqueName": "C:\\Users\\sigma\\Downloads\\project\\LaptopShop\\LaptopShop.csproj",
         "projectName": "LaptopShop",
-        "projectPath": "C:\\Users\\sigma\\Downloads\\Web-Project-master\\Web-Project-master\\LaptopShop\\LaptopShop.csproj",
+        "projectPath": "C:\\Users\\sigma\\Downloads\\project\\LaptopShop\\LaptopShop.csproj",
         "packagesPath": "C:\\Users\\sigma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sigma\\Downloads\\Web-Project-master\\Web-Project-master\\LaptopShop\\obj\\",
+        "outputPath": "C:\\Users\\sigma\\Downloads\\project\\LaptopShop\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\sigma\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -46,6 +46,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.4.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.Facebook": {
               "target": "Package",
               "version": "[8.0.10, )"

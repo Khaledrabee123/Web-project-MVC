@@ -19,6 +19,7 @@ namespace LaptopShop
 			var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
+			builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
 			builder.Services.AddControllersWithViews();
 			builder.Services.AddSignalR();
 			builder.Services.AddDbContext<DBlaptops>(OptionsBuilder =>
