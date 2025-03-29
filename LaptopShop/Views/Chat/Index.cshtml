@@ -1,90 +1,270 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Customer Service";
 }
-<h1>Customer service</h1>
 
+<style>
+    :root {
+        --primary-color: #6c5ce7;
+        --primary-dark: #5649c0;
+        --success-color: #00b894;
+        --danger-color: #e74c3c;
+        --light-color: #f8f9fa;
+        --dark-color: #2d3436;
+        --secondary-color: #95a5a6;
+        --chat-bg: #f5f6fa;
+    }
 
-<input type="text" id="message" name="message" class="form-control" />
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--light-color);
+        padding: 20px;
+    }
 
-<input type="button" value="JoinGroup" onclick="joingroup()" />
+    h1 {
+        color: var(--dark-color);
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
 
-<input type="button" value="Send" onclick="sendmessage()" />
+    .chat-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
 
-<input type="button" value="Leave" onclick="leavegroup()" />
-<br />
+    .chat-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 15px 20px;
+        font-weight: 600;
+    }
 
+    .chat-messages {
+        height: 400px;
+        overflow-y: auto;
+        padding: 20px;
+        background-color: var(--chat-bg);
+    }
 
+    #ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
 
-<ul id="ul">
+        #ul li {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            position: relative;
+            word-wrap: break-word;
+        }
 
-	<li>ex</li>
+    .chat-controls {
+        display: flex;
+        padding: 15px;
+        background: white;
+        border-top: 1px solid #eee;
+        gap: 10px;
+    }
 
-</ul>
+    #message {
+        flex: 1;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-join {
+        background-color: var(--success-color);
+        color: white;
+    }
+
+        .btn-join:hover {
+            background-color: #00a884;
+            transform: translateY(-2px);
+        }
+
+    .btn-send {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+        .btn-send:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+    .btn-leave {
+        background-color: var(--danger-color);
+        color: white;
+    }
+
+        .btn-leave:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+    .status-message {
+        color: var(--secondary-color);
+        font-style: italic;
+        padding: 5px 15px;
+        font-size: 0.9rem;
+    }
+
+    .user-message {
+        background-color: #e3f2fd;
+        margin-left: 20px;
+    }
+
+    .system-message {
+        background-color: #f5f5f5;
+        color: var(--secondary-color);
+    }
+
+    .customer-service-message {
+        background-color: #e8f5e9;
+        margin-right: 20px;
+    }
+
+    @@media (max-width: 768px) {
+        .chat-controls {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <i class="bi bi-headset"></i> Customer Support Chat
+    </div>
+
+    <div class="chat-messages">
+        <ul id="ul">
+            <li class="system-message">Welcome to customer support! Please type your message below.</li>
+        </ul>
+    </div>
+
+    <div class="chat-controls">
+        <input type="text" id="message" name="message" class="form-control" placeholder="Type your message here..." />
+        <button type="button" class="btn btn-join" onclick="joingroup()">
+            <i class="bi bi-person-plus"></i> Join
+        </button>
+        <button type="button" class="btn btn-send" onclick="sendmessage()">
+            <i class="bi bi-send"></i> Send
+        </button>
+        <button type="button" class="btn btn-leave" onclick="leavegroup()">
+            <i class="bi bi-box-arrow-right"></i> Leave
+        </button>
+    </div>
+</div>
 
 @section Scripts {
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
-	<script src="~/microsoft/signalr/dist/browser/signalr.js"></script>
-	<script type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"></script>
+    <script>
+        var con = new signalR.HubConnectionBuilder().withUrl("/Chat").build();
 
-	<script>
+        // Start the connection
+        con.start().catch(err => {
+            console.error(err.toString());
+            $("#ul").append("<li class='system-message'>Error connecting to chat service</li>");
+        });
 
+        // Message received from server
+        con.on("sendmessage", function (name, message) {
+            const messageClass = name === "Customer Service" ? "customer-service-message" : "user-message";
+            $("#ul").append(`<li class="${messageClass}"><strong>${name}:</strong> ${message}</li>`);
+            scrollToBottom();
+        });
 
+        // User joined notification
+        con.on("added", function (name) {
+            $("#ul").append(`<li class="system-message">${name} has joined the chat</li>`);
+            scrollToBottom();
+        });
 
-		var con = new signalR.HubConnectionBuilder().withUrl("/Chat").build();
+        // Customer service notification
+        con.on("Custadd", function (message) {
+            $("#ul").append(`<li class="customer-service-message">${message}</li>`);
+            scrollToBottom();
+        });
 
-		// Start the connection
-		con.start();
+        // Error notification
+        con.on("error", function (message) {
+            $("#ul").append(`<li class="system-message" style="color:var(--danger-color)">${message}</li>`);
+            scrollToBottom();
+        });
 
-		//
+        // User left notification
+        con.on("groupLeft", function (name) {
+            $("#ul").append(`<li class="system-message">${name} has left the chat</li>`);
+            scrollToBottom();
+        });
 
+        var username = "@User.Identity.Name";
 
-		con.on("sendmessage", function (n, m) {
+        function joingroup() {
+            if (!username) {
+                $("#ul").append('<li class="system-message" style="color:var(--danger-color)">Please log in to join chat</li>');
+                return;
+            }
+            con.invoke("joinGroup", username)
+                .catch(err => {
+                    console.error(err.toString());
+                });
+        }
 
-			$("#ul").append("<li>" + n + " - " + m + "</li>");
-		});
+        function sendmessage() {
+            const message = $("#message").val();
+            if (!message.trim()) return;
 
-		// Optionally, you can define methods to handle messages from the server
+            con.invoke("sendMessage", username, message)
+                .then(() => {
+                    $("#message").val("").focus();
+                })
+                .catch(err => {
+                    console.error(err.toString());
+                });
+        }
 
+        function leavegroup() {
+            con.invoke("leaveGroup", username)
+                .catch(err => {
+                    console.error(err.toString());
+                });
+        }
 
+        function scrollToBottom() {
+            const chatMessages = document.querySelector('.chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
 
-
-		con.on("added", function (n) {
-
-			$("#ul").append("<li>" + n + "</li>");
-		});
-
-		"Custadd"
-		con.on("Custadd", function (n) {
-
-			$("#ul").append("<li>" + n + "</li>");
-		});
-
-		con.on("error", function (n) {
-
-			$("#ul").append("<li>" + n + "</li>");
-		});
-		con.on("groupLeft", function (n) {
-
-			$("#ul").append("<li>" + n + "</li>");
-		});
-
-		// Optionally, you can define methods to handle messages from the server
-		var username = "@User.Identity.Name";
-		function joingroup() {
-
-			con.invoke("joinGroup", username);
-		}
-
-		function sendmessage() {
-			con.invoke("sendMessage", username, $("#message").val());
-		}
-
-		function leavegroup() {
-			con.invoke("leaveGroup", username);
-		}
-
-	</script>
-
+        // Allow sending message with Enter key
+        $("#message").keypress(function (e) {
+            if (e.which == 13) {
+                sendmessage();
+            }
+        });
+    </script>
 }

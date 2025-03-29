@@ -1,4 +1,87 @@
 ﻿@{
-    ViewData["Title"] = "ConfirmEmail";
+    ViewData["Title"] = "Email Confirmation";
 }
-<h3>@ViewBag.Message</h3>
+
+<style>
+    :root {
+        --primary-color: #6c5ce7; 
+        --primary-dark: #5649c0;
+        --success-color: #00b894; 
+        --danger-color: #d63031;
+        --light-color: #f8f9fa;
+        --dark-color: #2d3436;
+    }
+
+   
+    .confirmation-container {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    .confirmation-icon {
+        font-size: 4rem;
+        color: var(--success-color);
+        margin-bottom: 1.5rem;
+    }
+
+    h3 {
+        color: var(--dark-color);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        line-height: 1.4;
+    }
+
+    .action-btn {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        margin-top: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+        .action-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+    .success-message {
+        color: var(--success-color);
+        font-weight: 500;
+    }
+
+    .error-message {
+        color: var(--danger-color);
+        font-weight: 500;
+    }
+</style>
+
+<div class="confirmation-container">
+    @if (ViewBag.IsSuccess == true)
+    {
+        <div class="confirmation-icon">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+        <h3 class="success-message">@ViewBag.Message</h3>
+        <a href="/User/Login" class="action-btn">Continue to Login</a>
+    }
+    else
+    {
+        <div class="confirmation-icon" style="color: var(--danger-color);">
+            <i class="bi bi-exclamation-circle-fill"></i>
+        </div>
+        <h3 class="error-message">@ViewBag.Message</h3>
+        <a href="/Account/Register" class="action-btn">Try Again</a>
+    }
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

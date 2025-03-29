@@ -33,9 +33,9 @@ namespace LaptopShop.Views.viewmodels
 		[Required]
 		[StringLength(50)]
 		public string Graphics { get; set; }
-		[Required]
+	
 		[StringLength(50)]
-		public string Image { get; set; }
+		public string? Image { get; set; }
 		[Required]
 		[StringLength(50)]
 		public string Brand { get; set; }

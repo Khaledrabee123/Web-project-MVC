@@ -2,7 +2,258 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    :root {
+        --primary-color: #6c5ce7;
+        --primary-dark: #5649c0;
+        --light-color: #f8f9fa;
+        --dark-color: #2d3436;
+        --secondary-color: #95a5a6;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f6fa;
+        color: var(--dark-color);
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, #6c5ce7 0%, #5649c0 100%);
+        color: white;
+        padding: 80px 20px;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto 30px;
+        opacity: 0.9;
+    }
+
+    .btn-hero {
+        background-color: white;
+        color: var(--primary-color);
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+        .btn-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .featured-section {
+        padding: 60px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+        .section-title h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+    .product-image {
+        height: 200px;
+        width: 100%;
+        object-fit: contain;
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
+
+    .product-info {
+        padding: 20px;
+    }
+
+    .product-name {
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+    }
+
+    .product-price {
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+
+    .btn-view {
+        display: block;
+        text-align: center;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-view:hover {
+            background-color: var(--primary-dark);
+        }
+
+    .features-section {
+        background-color: white;
+        padding: 60px 20px;
+    }
+
+    .features-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+    }
+
+    .feature-box {
+        text-align: center;
+        padding: 30px 20px;
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    .feature-title {
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .feature-text {
+        color: var(--secondary-color);
+        line-height: 1.6;
+    }
+
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.2rem;
+        }
+
+        .products-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="hero-section">
+    <h1 class="hero-title">Premium Laptops for Work and Play</h1>
+    <p class="hero-subtitle">Discover our curated collection of high-performance laptops with the latest technology at competitive prices.</p>
+    <a href="/Laptop/Index" class="btn-hero">Shop Now</a>
 </div>
+
+<div class="featured-section">
+    <div class="section-title">
+        <h2>Featured Products</h2>
+    </div>
+
+    <div class="products-grid">
+        <!-- Product 1 -->
+        <div class="product-card">
+            <img src="/imges/1.png" alt="Premium Laptop" class="product-image">
+            <div class="product-info">
+                <h3 class="product-name">Apple MacBook Pro 14</h3>
+                <div class="product-price">$1999.99</div>
+                <a href="/Laptop/gitbyid/10" class="btn-view">View Details</a>
+            </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card">
+            <img src="/imges/5.png" alt="Gaming Laptop" class="product-image">
+            <div class="product-info">
+                <h3 class="product-name">Dell G15</h3>
+                <div class="product-price">$699.69</div>
+                <a href="/Laptop/gitbyid/5" class="btn-view">View Details</a>
+            </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card">
+            <img src="/imges/3.png" alt="Business Laptop" class="product-image">
+            <div class="product-info">
+                <h3 class="product-name">Acer Aspire 5</h3>
+                <div class="product-price">$699.99</div>
+                <a href="/Laptop/gitbyid/3" class="btn-view">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="features-container">
+        <div class="feature-box">
+            <div class="feature-icon">
+                <i class="bi bi-truck"></i>
+            </div>
+            <h3 class="feature-title">Free Shipping</h3>
+            <p class="feature-text">Free delivery on all orders over $500. Fast and reliable shipping to your doorstep.</p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-icon">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <h3 class="feature-title">2-Year Warranty</h3>
+            <p class="feature-text">All our laptops come with a comprehensive 2-year manufacturer's warranty.</p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-icon">
+                <i class="bi bi-arrow-repeat"></i>
+            </div>
+            <h3 class="feature-title">30-Day Returns</h3>
+            <p class="feature-text">Not satisfied? Return within 30 days for a full refund, no questions asked.</p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-icon">
+                <i class="bi bi-headset"></i>
+            </div>
+            <h3 class="feature-title">24/7 Support</h3>
+            <p class="feature-text">Our customer service team is available around the clock to assist you.</p>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

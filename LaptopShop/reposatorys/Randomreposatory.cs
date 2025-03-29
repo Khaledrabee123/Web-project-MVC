@@ -7,7 +7,7 @@ namespace LaptopShop.Models.reposatorys
         Random Random = new Random();
         public int randomNumber()
         {
-            return Random.Next(10000, 10000000);
+            return Random.Next(100000, 999999);
         }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using LaptopShop.Models.database;
 using LaptopShop.Models.reposatorys;
+using LaptopShop.servive.LaptopService;
 using LaptopShop.Views.viewmodels;
 
 namespace LaptopShop.Models.servive
 {
-    public class laptopSetvice
+    public class LaptopService:ILaptopService
     {
         LaptopReposatory LaptopReposatory;
-        public laptopSetvice(LaptopReposatory lp)
+        public LaptopService(LaptopReposatory lp)
         {
             LaptopReposatory = lp;
         }
@@ -53,12 +54,13 @@ namespace LaptopShop.Models.servive
             laptop.Graphics = receivelaptop.Graphics;
             laptop.Brand = receivelaptop.Brand;
             laptop.Battery = receivelaptop.Battery;
-            laptop.Image = receivelaptop.Image;
+            laptop.Image = receivelaptop.LaptopPhoto.FileName;
             laptop.Memory = receivelaptop.Memory;
             laptop.Processor = receivelaptop.Processor;
             laptop.Storage = receivelaptop.Storage;
             laptop.Image = receivelaptop.LaptopPhoto.FileName;
             laptop.name = receivelaptop.name;
+            laptop.LaptopPhoto = receivelaptop.LaptopPhoto;
             return laptop;
 
         }

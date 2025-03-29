@@ -1,34 +1,189 @@
 ﻿@model LaptopShop.Models.database.Laptop
-
 @{
-	ViewData["Title"] = "gitbyid";
+    ViewData["Title"] = Model.name;
 }
 
+<style>
+    :root {
+        --primary-color: #6c5ce7;
+        --primary-dark: #5649c0;
+        --success-color: #00b894;
+        --danger-color: #e74c3c;
+        --light-color: #f8f9fa;
+        --dark-color: #2d3436;
+        --secondary-color: #95a5a6;
+    }
 
+    body {
+        background-color: #f5f6fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px;
+    }
+
+    .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+
+        .product-container img {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            height: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+    .product-details {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    h2 {
+        color: var(--dark-color);
+        font-size: 2rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    p {
+        font-size: 1.1rem;
+        color: var(--dark-color);
+        margin-bottom: 15px;
+    }
+
+    strong {
+        color: var(--dark-color);
+        font-weight: 600;
+    }
+
+    #price {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    #availability {
+        color: var(--success-color);
+        font-weight: 600;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 25px 0;
+    }
+
+    li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        color: var(--dark-color);
+    }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        li strong {
+            color: var(--secondary-color);
+        }
+
+    #buy-button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        font-size: 1.1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        margin-top: 20px;
+        width: 100%;
+        max-width: 300px;
+    }
+
+        #buy-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+
+    .btn-primary {
+        background-color: var(--danger-color);
+        border-color: var(--danger-color);
+        padding: 14px 30px;
+        font-size: 1.1rem;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+    .admin-actions {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    @@media (max-width: 768px) {
+        .product-container {
+            flex-direction: column;
+            padding: 20px;
+        }
+
+            .product-container img {
+                min-width: 100%;
+            }
+
+        #buy-button, .btn-primary {
+            width: 100%;
+            max-width: none;
+        }
+    }
+</style>
 
 <div class="product-container">
-	<img src="/imges/@Model.Image" alt="@Model.name">
-	<div class="product-details">
-		<h2>@Model.name </h2>
-		<p><strong>Price:</strong> <span id="price">@Model.price$</span></p>
-		<p><strong>Availability:</strong> <span id="availability">In Stock</span></p>
-		<ul>
-			<li>@Model.description</li>
-			<li><strong>Processor:</strong>@Model.Processor</li>
-			<li><strong>RAM:</strong>@Model.Memory  </li>
-			<li><strong>Storage:</strong>@Model.Storage</li>
-			<li><strong>Display:</strong>@Model.Display</li>
-		</ul>
-		<button id="buy-button" onclick="window.location = '/Cart/AddToCard/@Model.Id?username=@User.Identity.Name'">
-			Add to cart
-		</button>
+    <img src="/imges/@Model.Image" alt="@Model.name">
+    <div class="product-details">
+        <h2>@Model.name</h2>
+        <p><strong>Price:</strong> <span id="price">@Model.price$</span></p>
+        <p><strong>Availability:</strong> <span id="availability">In Stock</span></p>
 
-		@if (User.IsInRole("Admin"))
-		{
-			<a href="/Admin/remove/@Model.Id" class="btn btn-primary">remove</a>
+        <ul>
+            <li>@Model.description</li>
+            <li><strong>Processor:</strong> @Model.Processor</li>
+            <li><strong>RAM:</strong> @Model.Memory</li>
+            <li><strong>Storage:</strong> @Model.Storage</li>
+            <li><strong>Display:</strong> @Model.Display</li>
+        </ul>
 
-		}
+        <button id="buy-button" onclick="window.location='/Cart/AddToCard/@Model.Id?username=@User.Identity.Name'">
+            <i class="bi bi-cart-plus"></i> Add to Cart
+        </button>
 
-	</div>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="admin-actions">
+                <a href="/Admin/remove/@Model.Id" class="btn btn-primary">
+                    <i class="bi bi-trash"></i> Remove Product
+                </a>
+            </div>
+        }
+    </div>
 </div>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

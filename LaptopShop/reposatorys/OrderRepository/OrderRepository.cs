@@ -5,7 +5,7 @@ using LaptopShop.Models.interfaces;
 
 namespace LaptopShop.Models.reposatorys
 {
-    public class OrderRepository : IOrder
+    public class OrderRepository : IOrderRepository
     {
         private readonly DBlaptops dBlaptops;
         private readonly ILogger<OrderRepository> logger;

@@ -1,85 +1,194 @@
 ﻿@model LaptopShop.Views.viewmodels.loginViewmodel
 
 @{
-	ViewData["Title"] = "login";
+    ViewData["Title"] = "Login";
 }
 
-<h1>login</h1>
+<style>
+    :root {
+        --primary-color: #6c5ce7; 
+        --primary-dark: #5649c0;
+        --secondary-color: #a8a8a8;
+        --success-color: #00b894; 
+        --danger-color: #d63031;
+        --light-color: #f8f9fa;
+        --dark-color: #2d3436;
+    }
 
-<h4>loginViewmodel</h4>
-<hr />
-<div class="row">
-	<div class="col-md-4">
-		<form asp-action="login">
-			<div asp-validation-summary="All" class="text-danger"></div>
-			<div class="form-group">
-				<label asp-for="Username" class="control-label"></label>
-				<input asp-for="Username" class="form-control" />
-				<span asp-validation-for="Username" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Password" class="control-label"></label>
-				<input asp-for="Password" class="form-control" />
-				<span asp-validation-for="Password" class="text-danger"></span>
-			</div>
-			<div class="form-group form-check">
-				<label class="form-check-label">
-					<input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
-				</label>
-			</div>
-			<div class="form-group">
-				<input type="submit" value="login" class="btn btn-primary" />
-			</div>
-		</form>
+    body {
+        background-color: #f5f6fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
+    .login-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
 
-		<div class="row">
+    h1 {
+        color: var(--dark-color);
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
 
-			<div class="col-md-4">
-				<h1>External Login</h1>
-				<hr />
-				@{
-					if (Model.Schemes?.Count() == 0)
-					{
-						<div>No external logins configured</div>
-					}
-					else
-					{
-						<form asp-action="ExternalLogin">
-							<div>
-								@foreach (var provider in Model.Schemes)
-								{<button type="submit" class="btn btn-light btn-block" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+    h4 {
+        color: var(--secondary-color);
+        font-weight: 400;
+        margin-bottom: 30px;
+    }
+
+    .form-control {
+        border: 1px solid #dfe6e9;
+        border-radius: 5px;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+        }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        padding: 10px 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+    .btn-light {
+        border: 1px solid #dfe6e9;
+        margin-bottom: 10px;
+        padding: 8px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-light:hover {
+            background-color: #f1f1f1;
+            transform: translateY(-2px);
+        }
+
+        .btn-light img {
+            height: 20px;
+        }
+
+    .external-login {
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid #eee;
+    }
+
+    .form-check-label {
+        margin-left: 5px;
+    }
+
+    .text-danger {
+        color: var(--danger-color) !important;
+    }
+
+    a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+    hr {
+        border-color: #eee;
+        margin: 20px 0;
+    }
+</style>
+
+<div class="login-container">
+    <h1>Login</h1>
+    <h4>Welcome back! Please enter your credentials</h4>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="login">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Username" class="control-label"></label>
+                    <input asp-for="Username" class="form-control" placeholder="Enter your username" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" placeholder="Enter your password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Login" class="btn btn-primary" />
+                </div>
+            </form>
+
+            
+        </div>
+
+        <div class="col-md-6">
+            <div class="external-login">
+                <h3>Or log in with</h3>
+                <hr />
+                @{
+                    if (Model.Schemes?.Count() == 0)
+                    {
+                        <div>No external logins configured</div>
+                    }
+                    else
+                    {
+                        <form asp-action="ExternalLogin">
+                            <div>
+                                @foreach (var provider in Model.Schemes)
+                                {
+                                    <button type="submit" class="btn btn-light btn-block" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
                                         @{
                                             string imageSrc = string.Empty;
                                             if (provider.DisplayName == "Google")
-                                                imageSrc = "https://gfx4arab.com/wp-content/uploads/2020/06/google-icon.svg";
-                                            else if (provider.DisplayName == "Facebook")
+                                                imageSrc = "https://developers.google.com/identity/images/g-logo.png";
+                                                    else if (provider.DisplayName == "Facebook")
                                                 imageSrc = "https://cdn.freebiesupply.com/logos/large/2x/facebook-3-logo-png-transparent.png";
                                             else if (provider.DisplayName == "Microsoft")
                                                 imageSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Microsoft_Store_logo.svg/1200px-Microsoft_Store_logo.svg.png";
                                         }
-                                        <img src="@imageSrc" alt="@provider.DisplayName" style="height: 20px;" />
-                                        Login With @provider.DisplayName
+                                        <img src="@imageSrc" alt="@provider.DisplayName" />
+                                        Login with @provider.DisplayName
                                     </button>
-								}
-							</div>
-						</form>
-					}
-				}
+                                }
+                            </div>
+                        </form>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
-				<div />
-
-
-			</div>
-		</div>
-	</div>
-
-	<div>
-		<a asp-action="Index">Back to List</a>
-	</div>
-
-	@section Scripts {
-		@{
-			await Html.RenderPartialAsync("_ValidationScriptsPartial");
-		}
-	}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

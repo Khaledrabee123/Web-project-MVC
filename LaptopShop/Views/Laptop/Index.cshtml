@@ -1,46 +1,242 @@
 ﻿@model List<LaptopShop.Models.database.Laptop>
-
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Browse Laptops";
 }
 
+<style>
+    :root {
+        --primary-color: #6c5ce7;
+        --primary-dark: #5649c0;
+        --success-color: #00b894;
+        --danger-color: #e74c3c;
+        --light-color: #f8f9fa;
+        --dark-color: #2d3436;
+        --secondary-color: #95a5a6;
+    }
+
+    body {
+        background-color: #f5f6fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar {
+        background-color: #6c5ce7;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+        .navbar h2 {
+            color: var(--dark-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .navbar ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navbar li a {
+            text-decoration: none;
+            color: var(--dark-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid #dfe6f9;
+        }
+
+            .navbar li a:hover {
+                background-color: var(--primary-color);
+                color: dodgerblue;
+                border-color: var(--primary-color);
+                transform: translateY(-2px);
+            }
+
+    .all {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+        padding: 1rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            padding: 1rem;
+            background-color: #f8f9fa;
+        }
+
+    .product-info {
+        padding: 1.2rem;
+    }
+
+    .product-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--dark-color);
+    }
+
+    .product-category {
+        font-size: 0.9rem;
+        color: var(--primary-color);
+        font-weight: 500;
+        margin-bottom: 0.8rem;
+    }
+
+    .product-specs {
+        font-size: 0.9rem;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .product-price {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 1.2rem;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+        .buttons button {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+    #buy-button {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+        #buy-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+    .buttons button:last-child {
+        background-color: var(--light-color);
+        color: var(--dark-color);
+        border: 1px solid #6c5ce7;
+    }
+
+        .buttons button:last-child:hover {
+            background-color: #e9ecef;
+        }
+
+    .admin-actions {
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+        .admin-actions button {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .admin-actions button:hover {
+                background-color: #00a884;
+                transform: translateY(-2px);
+            }
+
+    @@media (max-width: 768px) {
+        .navbar ul {
+            gap: 0.5rem;
+        }
+
+        .navbar li a {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .all {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
 <nav class="navbar">
-	<h2>Laptop Brands</h2>
-	<ul>
-		<li><a href="/Laptop/getcatagory?catagory=Apple">Apple</a></li>
-		<li><a href="/Laptop/getcatagory?catagory=Dell">Dell</a></li>
-		<li><a href="/Laptop/getcatagory?catagory=HP">HP</a></li>
-		<li><a href="/Laptop/getcatagory?catagory=Lenovo">Lenovo</a></li>
-		<li><a href="/Laptop/getcatagory?catagory=Asus">Asus</a></li>
-		<li><a href="/Laptop/getcatagory?catagory=Acer">Acer</a></li>
-		<li><a href="/Laptop/getcatagory?catagory=MSI">MSI</a></li>
-	</ul>
+    <h2>Laptop Brands</h2>
+    <ul>
+        <li><a href="/Laptop/getcatagory?catagory=Apple">Apple</a></li>
+        <li><a href="/Laptop/getcatagory?catagory=Dell">Dell</a></li>
+        <li><a href="/Laptop/getcatagory?catagory=HP">HP</a></li>
+        <li><a href="/Laptop/getcatagory?catagory=Lenovo">Lenovo</a></li>
+        <li><a href="/Laptop/getcatagory?catagory=Asus">Asus</a></li>
+        <li><a href="/Laptop/getcatagory?catagory=Acer">Acer</a></li>
+        <li><a href="/Laptop/getcatagory?catagory=MSI">MSI</a></li>
+    </ul>
 </nav>
+
 <div class="all">
-
-	@foreach (var item in Model)
-	{
-
-		<div class="product-card">
-			<img src="/imges/@item.Image">
-			<h2 class="product-title">@item.name</h2>
-			<p class="product-category">@item.Brand</p>
-			<p class="product-specs">@item.description<br></p> <p class="product-price">@item.price</p>
-			<div class="buttons">
-				<button id="buy-button" onclick="window.location = '/Cart/AddToCard/@item.Id?username=@User.Identity.Name'">
-					Add to cart
-				</button>				<button onclick="window.location = '/Laptop/gitbyid/@item.Id'">detals</button>
-
-			</div>
-		</div>
-
-	}
+    @foreach (var item in Model)
+    {
+        <div class="product-card">
+            <img src="/imges/@item.Image" alt="@item.name">
+            <div class="product-info">
+                <h2 class="product-title">@item.name</h2>
+                <p class="product-category">@item.Brand</p>
+                <p class="product-specs">@item.description</p>
+                <p class="product-price">$@item.price</p>
+                <div class="buttons">
+                    <button id="buy-button" onclick="window.location='/Cart/AddToCard/@item.Id?username=@User.Identity.Name'">
+                        Add to cart
+                    </button>
+                    <button onclick="window.location='/Laptop/gitbyid/@item.Id'">Details</button>
+                </div>
+            </div>
+        </div>
+    }
 </div>
-<div>
-	@if (User.IsInRole("Admin"))
-	{
-		<button onclick="window.location = '/Admin/addLaptop'">add Laptop</button>
-	}
 
+@if (User.IsInRole("Admin"))
+{
+    <div class="admin-actions">
+        <button onclick="window.location='/Admin/addLaptop'">
+            <i class="bi bi-plus-lg"></i> Add New Laptop
+        </button>
+    </div>
+}
 
-</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

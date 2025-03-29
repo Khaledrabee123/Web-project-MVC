@@ -5,23 +5,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using MediatR;
 using LaptopShop.CQRS.Queries;
+using LaptopShop.servive.LaptopService;
 
 namespace LaptopShop.Controllers
 {
     [Authorize]
     public class LaptopController : Controller
     {
-      private readonly   IMediator mediator;
+        ILaptopService LaptopService;
         ILogger<LaptopController> _logger;
         IMemoryCache _Cache;
-		public LaptopController(ILogger<LaptopController> logger, IMemoryCache cache, IMediator mediator)
-		{
-			_logger = logger;
-			_Cache = cache;
-			this.mediator = mediator;
-		}
+        public LaptopController(ILogger<LaptopController> logger, IMemoryCache cache, ILaptopService laptopService)
+        {
+            _logger = logger;
+            _Cache = cache;
+            LaptopService = laptopService;
+        }
 
-		public IActionResult Index()
+
+        public IActionResult Index()
         {
             string key = "GetAllLaptops";
             if (_Cache.TryGetValue(key, out List<Laptop> data))
@@ -36,7 +38,7 @@ namespace LaptopShop.Controllers
             .SetSlidingExpiration(TimeSpan.FromMinutes(5))
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(30))
             .SetPriority(CacheItemPriority.Normal);
-             data = mediator.Send(new GetAllLaptopsQuery()).Result;
+            data = LaptopService.getAll();
             _Cache.Set(key, data, cacheOptions);
             
             
@@ -54,7 +56,7 @@ namespace LaptopShop.Controllers
 
         public IActionResult gitbyid(int Id)
         {
-            return View(mediator.Send(new GetLaptopByIdQuery(Id)).Result);
+            return View(LaptopService.getLaptopbyid(Id));
         }
 
         public IActionResult getcatagory(String catagory)
@@ -66,12 +68,14 @@ namespace LaptopShop.Controllers
                 return View("Index", data);
 
             }
-            
+
+            data = LaptopService.getbyCategorie(catagory);
+
+
             var cacheOptions = new MemoryCacheEntryOptions()
             .SetSlidingExpiration(TimeSpan.FromMinutes(5))
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(30))
             .SetPriority(CacheItemPriority.Normal);
-            data = mediator.Send(new GetLaptopsByCategorieQuery(catagory)).Result;
             _Cache.Set(key, data, cacheOptions);
             
             

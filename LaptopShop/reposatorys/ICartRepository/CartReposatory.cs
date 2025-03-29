@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaptopShop.Models.reposatorys
 {
-    public class CartReposatory : ICart
+    public class CartReposatory : ICartRepository
     {
         DBlaptops DBlaptops;
         public CartReposatory(DBlaptops db)

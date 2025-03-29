@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Stripe;
 using LaptopShop.Services;
+using LaptopShop.servive.LaptopService;
+using LaptopShop.Models.servive.CartService;
+using LaptopShop.servive.order;
 
 namespace LaptopShop
 {
@@ -34,15 +37,20 @@ namespace LaptopShop
             builder.Services.AddScoped<IStripeService, StripeService>();
             StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeOptions:SecretKey");
 
-            builder.Services.AddScoped<laptopSetvice>();
+            builder.Services.AddScoped<LaptopService>();
 			builder.Services.AddScoped<LaptopReposatory>();
 			builder.Services.AddScoped<OrderRepository>();
 			builder.Services.AddScoped<CartReposatory>();
             builder.Services.AddScoped<Randomreposatory>();
-            builder.Services.AddScoped<ILaptop, LaptopReposatory>();
+            builder.Services.AddScoped<ILaptopRepository, LaptopReposatory>();
+            builder.Services.AddScoped<ILaptopService, LaptopService>();
+
             builder.Services.AddScoped<IRandom, Randomreposatory>();
-            builder.Services.AddScoped<IOrder, OrderRepository>();
-			builder.Services.AddScoped<ICart, CartReposatory>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+			builder.Services.AddScoped<ICartRepository, CartReposatory>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<ICartService, CartService>();
+
 
             builder.Services.AddMemoryCache();
 			builder.Services.AddSerilog();

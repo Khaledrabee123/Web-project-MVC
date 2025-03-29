@@ -2,7 +2,7 @@
 
 namespace LaptopShop.Models.interfaces
 {
-    public interface IOrder
+    public interface IOrderRepository
     {
 
         public void addOrder(Order order);

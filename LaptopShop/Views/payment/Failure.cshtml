@@ -1,24 +1,172 @@
-﻿﻿@{
-    ViewData["Title"] = "Faliure";
+﻿@{
+    ViewData["Title"] = "Payment Failed";
 }
+
+<style>
+    :root {
+        --danger-color: #e74c3c;
+        --danger-dark: #c0392b;
+        --light-color: #f8f9fa;
+        --dark-color: #2d3436;
+        --secondary-color: #95a5a6;
+    }
+
+    body {
+        background-color: #f5f6fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .starter-section {
+        padding: 60px 0;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background-color: var(--danger-color);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        border-bottom: none;
+    }
+
+    .card-body {
+        padding: 30px;
+        background-color: white;
+    }
+
+    .section-title h3 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: white;
+    }
+
+    .section-title p {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 0;
+    }
+
+    .error-message {
+        background-color: #fdeded;
+        border-left: 4px solid var(--danger-color);
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+    }
+
+        .error-message p {
+            color: var(--danger-dark);
+            margin: 0;
+            font-weight: 500;
+        }
+
+    .action-buttons {
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn-retry {
+        background-color: var(--danger-color);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+        .btn-retry:hover {
+            background-color: var(--danger-dark);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    .btn-home {
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .btn-home:hover {
+            background-color: #7f8c8d;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    @@media (max-width: 768px) {
+        .card-header {
+            padding: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .section-title h3 {
+            font-size: 1.8rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-retry, .btn-home {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
 
 <!-- Starter Section Section -->
 <section id="starter-section" class="starter-section section">
-    <div class="card">
-        <div class="card-header">
-            <!-- Section Title -->
-            <div class="container section-title" data-aos="fade-up">
-                <h3>Payment Failed</h3>
-                <p>Sorry, there was an issue with your payment. Please try again later.</p>
-            </div><!-- End Section Title -->
-        </div>
-        <div class="card-body">
-            <div class="container" data-aos="fade-up">
-                @if (ViewBag.ErrorMessage != null)
-                {
-                    <p>Error: @ViewBag.ErrorMessage</p>
-                }
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <!-- Section Title -->
+                <div class="section-title" data-aos="fade-up">
+                    <h3><i class="bi bi-x-circle-fill me-2"></i>Payment Failed</h3>
+                    <p>Sorry, there was an issue processing your payment. Please try again.</p>
+                </div><!-- End Section Title -->
+            </div>
+            <div class="card-body">
+                <div data-aos="fade-up">
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="error-message">
+                            <p><i class="bi bi-exclamation-triangle-fill me-2"></i>@ViewBag.ErrorMessage</p>
+                        </div>
+                    }
+
+                    <div class="action-buttons">
+                        <a href="/Payment/Retry" class="btn-retry">
+                            <i class="bi bi-arrow-repeat me-2"></i>Try Again
+                        </a>
+                        <a href="/" class="btn-home">
+                            <i class="bi bi-house-door me-2"></i>Return Home
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section><!-- /Starter Section Section -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

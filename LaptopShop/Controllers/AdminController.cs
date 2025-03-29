@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using LaptopShop.Models.database;
 using LaptopShop.Models.servive;
+using LaptopShop.servive.LaptopService;
 using LaptopShop.Views.viewmodels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,11 @@ namespace LaptopShop.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        private readonly laptopSetvice laptopSetvice;
+        private readonly ILaptopService laptopSetvice;
         ILogger<AdminController> _logger;
         public IWebHostEnvironment _hostingEnvironment { get; }
 
-        public AdminController(laptopSetvice laptopSetvice, IWebHostEnvironment hostingEnvironment, ILogger<AdminController> logger)
+        public AdminController(ILaptopService laptopSetvice, IWebHostEnvironment hostingEnvironment, ILogger<AdminController> logger)
         {
             this.laptopSetvice = laptopSetvice;
             _hostingEnvironment = hostingEnvironment;
@@ -44,11 +45,9 @@ namespace LaptopShop.Controllers
 
                 if (laptop.LaptopPhoto != null && laptop.LaptopPhoto.Length > 0)
                 {
-
                     var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "imges");
                     var filePath = Path.Combine(uploads, laptop.LaptopPhoto.FileName);
                     await laptop.LaptopPhoto.CopyToAsync(new FileStream(filePath, FileMode.Create));
-
                 }
 
 

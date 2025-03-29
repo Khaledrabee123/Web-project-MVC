@@ -3,6 +3,8 @@ using System.Text;
 using LaptopShop.Models.database;
 using LaptopShop.Models.reposatorys;
 using LaptopShop.Models.servive;
+using LaptopShop.Models.servive.CartService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,24 +12,23 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace LaptopShop.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
 
-        laptopSetvice laptopSetvice;
-        DBlaptops DBlaptops;
+        LaptopService laptopSetvice;
         UserManager<User> userManager;
         private readonly IMemoryCache _cache;
-        private readonly CartReposatory cartReposatory;
+        private readonly ICartService cartService;
         public ILogger<CartController> _Logger;
 
-        public CartController( laptopSetvice lp , DBlaptops dBlaptops, UserManager<User> userManager , ILogger<CartController> logger, IMemoryCache memory, CartReposatory cartReposatory )
+        public CartController( LaptopService lp , UserManager<User> userManager , ILogger<CartController> logger, IMemoryCache memory, ICartService cartService)
         {
             this. userManager = userManager;
             _Logger = logger;
             laptopSetvice = lp;
-            DBlaptops = dBlaptops;
             _cache = memory;
-            this.cartReposatory = cartReposatory;
+            this.cartService = cartService;
         }
 
 
@@ -39,7 +40,7 @@ namespace LaptopShop.Controllers
             int totla = 0;
             string userID = User.FindFirst(ClaimTypes.NameIdentifier).Value; 
             
-            var  data =cartReposatory.getUsersLaptops(userID);
+            var  data = cartService.getUsersLaptops(userID);
            
             foreach (var item in data)
             {
@@ -62,9 +63,9 @@ namespace LaptopShop.Controllers
         {
             string UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            Cart cart =  cartReposatory.makeCart(UserId, Id);
+            Cart cart = cartService.makeCart(UserId, Id);
 
-            cartReposatory.AddToCart(cart);
+            cartService.AddToCart(cart);
             
             _Logger.LogInformation("{username} added this Product ID {id} to his Cart", username,Id);
             
@@ -84,7 +85,7 @@ namespace LaptopShop.Controllers
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
 
 
-            cartReposatory.DeleteFromCart(userId, Laptopid);
+            cartService.DeleteFromCart(userId, Laptopid);
 
             
             _Logger.LogInformation("{username} deleted this Product ID {id} to his Cart", username, Laptopid);

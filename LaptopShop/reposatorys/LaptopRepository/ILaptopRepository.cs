@@ -3,7 +3,7 @@ using LaptopShop.Views.viewmodels;
 
 namespace LaptopShop.Models.interfaces
 {
-    public interface ILaptop
+    public interface ILaptopRepository
     {
         public Laptop getLaptopbyid(int id);
 

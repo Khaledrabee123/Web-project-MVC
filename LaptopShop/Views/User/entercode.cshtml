@@ -1,16 +1,129 @@
-﻿
-@{
-    ViewData["Title"] = "entercode";
+﻿@{
+    ViewData["Title"] = "Enter Verification Code";
 }
 
+<style>
+    :root {
+        --primary-color: #6c5ce7; /* Purple */
+        --primary-dark: #5649c0;
+        --secondary-color: #a8a8a8;
+        --success-color: #00b894; /* Teal */
+        --danger-color: #d63031;
+        --light-color: #f8f9fa;
+        --dark-color: #2d3436;
+    }
 
+   
 
-<form asp-action="ConfirmEmail" method="get">
+    .verification-container {
+        
+        background: white;
+        padding: 2.5rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
 
-    <input type="hidden" name="userId" value="@ViewData["id"]" />
-    <!-- Input for the code -->
-    <label for="code">Enter Code:</label>
-    <input type="number" id="code" name="code" required />
+    h1 {
+        color: var(--dark-color);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+    }
 
-    <button type="submit">Confirm Email</button>
-</form>
+    .verification-message {
+        color: var(--secondary-color);
+        margin-bottom: 2rem;
+        line-height: 1.5;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--dark-color);
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #dfe6e9;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+        input[type="number"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+            outline: none;
+        }
+
+    .verify-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+        .verify-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+    .resend-link {
+        margin-top: 1.5rem;
+        display: inline-block;
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .resend-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+    /* Hide number input arrows */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<div class="verification-container">
+    <h1>Verify Your Email</h1>
+    <p class="verification-message">We've sent a verification code to your email address. Please enter it below to confirm your account.</p>
+
+    <form asp-action="ConfirmEmail" method="get">
+        <input type="hidden" name="userId" value="@ViewData["id"]" />
+
+        <div class="form-group">
+            <label for="code">Verification Code</label>
+            <input type="number" id="code" name="code" required
+                   placeholder="Enter 6-digit code"
+                   min="100000" max="999999" />
+        </div>
+
+        <button type="submit" class="verify-btn">Confirm Email</button>
+    </form>
+
+    <a href="#" class="resend-link">Resend Verification Code</a>
+</div>

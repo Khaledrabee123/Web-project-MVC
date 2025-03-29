@@ -4,7 +4,7 @@ using LaptopShop.Views.viewmodels;
 
 namespace LaptopShop.Models.reposatorys
 {
-    public class LaptopReposatory : ILaptop
+    public class LaptopReposatory : ILaptopRepository
     {
         DBlaptops DBlaptops;
         public LaptopReposatory(DBlaptops db)

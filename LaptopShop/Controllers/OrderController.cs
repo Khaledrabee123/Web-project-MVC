@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
 using LaptopShop.Models.database;
 using LaptopShop.Models.reposatorys;
+using LaptopShop.Models.servive;
+using LaptopShop.servive.order;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
@@ -12,13 +14,13 @@ namespace LaptopShop.Controllers
 		
 		private readonly UserManager<User> userManager;
 		ILogger<OrderController> _logger;
-		public OrderRepository OrderRepository { get; }
+		public IOrderService orderService { get; }
 
-		public OrderController(UserManager<User> userManager, OrderRepository orderRepository , ILogger<OrderController> logger)
+		public OrderController(UserManager<User> userManager, IOrderService orderService, ILogger<OrderController> logger)
 		{
 			_logger = logger;
 			this.userManager = userManager;
-			OrderRepository = orderRepository;
+            this.orderService = orderService;
 		}
 
 
@@ -32,9 +34,9 @@ namespace LaptopShop.Controllers
 
 			string Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			Order order = OrderRepository.MakeOrder(Id, TotalAmount);
-			
-			OrderRepository.addOrder(order);
+			Order order = orderService.MakeOrder(Id, TotalAmount);
+
+            orderService.addOrder(order);
             
 			_logger.LogInformation("{user} has orderd {@oredr}", Username, order);
             

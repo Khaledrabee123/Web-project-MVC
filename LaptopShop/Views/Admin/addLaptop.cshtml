@@ -1,89 +1,334 @@
 ﻿@model LaptopShop.Views.viewmodels.Laptopview
-
 @{
-    ViewData["Title"] = "addLaptop";
+    ViewData["Title"] = "Add New Laptop";
 }
 
-<h1>add Laptop</h1>
+<style>
+    :root {
+        --primary-color: #6c5ce7;
+        --primary-dark: #5649c0;
+        --success-color: #00b894;
+        --danger-color: #e74c3c;
+        --light-color: #f8f9fa;
+        --dark-color: #2d3436;
+        --secondary-color: #95a5a6;
+    }
 
-<h4>Laptop</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="addLaptop" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    body {
+        background-color: #f5f6fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px;
+    }
+
+    h1 {
+        color: var(--dark-color);
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    h4 {
+        color: var(--secondary-color);
+        font-weight: 400;
+        margin-bottom: 30px;
+    }
+
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    label {
+        font-weight: 500;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .form-control {
+        border: 1px solid #dfe6e9;
+        border-radius: 5px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+            outline: none;
+        }
+
+    .text-danger {
+        color: var(--danger-color);
+        font-size: 0.9rem;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        padding: 12px 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .back-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+    .custom-file {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .custom-file-input {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: calc(2.25rem + 2px);
+        margin: 0;
+        opacity: 0;
+    }
+
+    .custom-file-lable {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+        height: calc(2.25rem + 2px);
+        padding: 0.375rem 0.75rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        font-weight: 400;
+        cursor: pointer;
+    }
+
+        .custom-file-lable::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 3;
+            display: block;
+            height: calc(calc(2.25rem + 2px) - 1px * 2);
+            padding: 0.375rem 0.75rem;
+            line-height: 1.5;
+            color: #495057;
+            content: "Browse";
+            background-color: #e9ecef;
+            border-left: inherit;
+            border-radius: 0 0.25rem 0.25rem 0;
+        }
+
+    /* Responsive grid for form */
+    @@media (min-width: 768px) {
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+
+        .form-group {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        .full-width {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+
+    /* File upload styling */
+    .file-upload-wrapper {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
+    .file-upload-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 15px;
+        background-color: #f8f9fa;
+        border: 1px dashed #ced4da;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .file-upload-label:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(108, 92, 231, 0.05);
+        }
+
+    .file-upload-icon {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-right: 10px;
+    }
+
+    .file-upload-text {
+        flex-grow: 1;
+        color: var(--secondary-color);
+    }
+
+    .file-upload-button {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="form-container">
+    <h1>Add New Laptop</h1>
+    <h4>Enter the laptop details below</h4>
+
+    <form asp-action="addLaptop" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-row">
             <div class="form-group">
-                <label asp-for="name" class="control-label"></label>
-                <input asp-for="name" class="form-control" />
+                <label asp-for="name" class="control-label">Model Name</label>
+                <input asp-for="name" class="form-control" placeholder="Enter laptop model name" />
                 <span asp-validation-for="name" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="description" class="control-label"></label>
-                <input asp-for="description" class="form-control" />
-                <span asp-validation-for="description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Memory" class="control-label"></label>
-                <input asp-for="Memory" class="form-control" />
-                <span asp-validation-for="Memory" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Processor" class="control-label"></label>
-                <input asp-for="Processor" class="form-control" />
-                <span asp-validation-for="Processor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Storage" class="control-label"></label>
-                <input asp-for="Storage" class="form-control" />
-                <span asp-validation-for="Storage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Battery" class="control-label"></label>
-                <input asp-for="Battery" class="form-control" />
-                <span asp-validation-for="Battery" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Display" class="control-label"></label>
-                <input asp-for="Display" class="form-control" />
-                <span asp-validation-for="Display" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Graphics" class="control-label"></label>
-                <input asp-for="Graphics" class="form-control" />
-                <span asp-validation-for="Graphics" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <input asp-for="Brand" class="form-control" />
+                <label asp-for="Brand" class="control-label">Brand</label>
+                <input asp-for="Brand" class="form-control" placeholder="Enter brand name" />
                 <span asp-validation-for="Brand" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="price" class="control-label"></label>
-                <input asp-for="price" class="form-control" />
+        </div>
 
+        <div class="form-group full-width">
+            <label asp-for="description" class="control-label">Description</label>
+            <input asp-for="description" class="form-control" placeholder="Enter detailed description" />
+            <span asp-validation-for="description" class="text-danger"></span>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="Memory" class="control-label">RAM</label>
+                <input asp-for="Memory" class="form-control" placeholder="e.g. 8GB, 16GB" />
+                <span asp-validation-for="Memory" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Processor" class="control-label">Processor</label>
+                <input asp-for="Processor" class="form-control" placeholder="e.g. Intel Core i7, AMD Ryzen 5" />
+                <span asp-validation-for="Processor" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="Storage" class="control-label">Storage</label>
+                <input asp-for="Storage" class="form-control" placeholder="e.g. 256GB SSD, 1TB HDD" />
+                <span asp-validation-for="Storage" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Battery" class="control-label">Battery</label>
+                <input asp-for="Battery" class="form-control" placeholder="e.g. 5000mAh, 8hrs" />
+                <span asp-validation-for="Battery" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="Display" class="control-label">Display</label>
+                <input asp-for="Display" class="form-control" placeholder="e.g. 15.6\" FHD IPS" />
+                <span asp-validation-for="Display" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Graphics" class="control-label">Graphics</label>
+                <input asp-for="Graphics" class="form-control" placeholder="e.g. NVIDIA GTX 1650" />
+                <span asp-validation-for="Graphics" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="price" class="control-label">Price ($)</label>
+                <input asp-for="price" class="form-control" placeholder="Enter price in dollars" />
                 <span asp-validation-for="price" class="text-danger"></span>
             </div>
-                <div class="form-group">
-                <label asp-for="LaptopPhoto" class="control-label"></label>
-                <div class="custom-file">
-                    <input asp-for="LaptopPhoto" class="form-control" />
-                   <label  class="custom-file-lable" for="customFile"> chose file</label>
+
+            <div class="form-group">
+                <label asp-for="LaptopPhoto" class="control-label">Product Image</label>
+                <div class="file-upload-wrapper">
+                    <label class="file-upload-label">
+                        <i class="bi bi-cloud-arrow-up file-upload-icon"></i>
+                        <span class="file-upload-text">Choose an image file...</span>
+                        <span class="file-upload-button">Browse</span>
+                        <input asp-for="LaptopPhoto" class="form-control custom-file-input" />
+                    </label>
                 </div>
                 <span asp-validation-for="LaptopPhoto" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Add Laptop" class="btn btn-primary" />
+        </div>
+    </form>
+
+    <a asp-action="Index" class="back-link">
+        <i class="bi bi-arrow-left"></i> Back to List
+    </a>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Update file input label with selected file name
+        document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+            var fileName = e.target.files[0].name;
+            document.querySelector('.file-upload-text').textContent = fileName;
+        });
+    </script>
+}

@@ -20,7 +20,6 @@ namespace LaptopShop.Controllers
     {
         SignInManager<User> SignInManager;
         UserManager<User> UserManager;
-        DBlaptops DBlaptops;
         ILogger<UserController> _logger;
         private IMemoryCache _Cache;
         private readonly ISenderEmail emailSender;
@@ -28,11 +27,10 @@ namespace LaptopShop.Controllers
 
         public RoleManager<IdentityRole> RoleManager { get; }
 
-        public UserController(UserManager<User> UserManager, SignInManager<User> signInManager, DBlaptops dBlaptops, RoleManager<IdentityRole> roleManager, ILogger<UserController> logger, ISenderEmail emailSender, IMemoryCache memoryCache, Randomreposatory random)
+        public UserController(UserManager<User> UserManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager, ILogger<UserController> logger, ISenderEmail emailSender, IMemoryCache memoryCache, Randomreposatory random)
         {
             this.UserManager = UserManager;
             SignInManager = signInManager;
-            DBlaptops = dBlaptops;
             RoleManager = roleManager;
             _logger = logger;
             this.emailSender = emailSender;
@@ -69,6 +67,7 @@ namespace LaptopShop.Controllers
                 var IsUsernameUser = await UserManager.FindByEmailAsync(viewUser.UserName);
                 if (IsEmailUsed == null && IsUsernameUser == null)
                 {
+                    // for caching
                     viewUser.Id = Random.randomNumber().ToString();
                     string key = "User" + viewUser.Id;
                     var cacheOptions = new MemoryCacheEntryOptions()
@@ -76,18 +75,21 @@ namespace LaptopShop.Controllers
                         .SetAbsoluteExpiration(TimeSpan.FromMinutes(30))
                         .SetPriority(CacheItemPriority.Normal);
                     _Cache.Set(key, viewUser, cacheOptions);
+                    // send the code to confirm email
                     await SendConfirmationEmail(viewUser.Email, viewUser);
+
                     return RedirectToAction("entercode", "User", new { UserId = viewUser.Id });
+
                 }
                 else
                 {
                     if (IsUsernameUser == null)
                     {
-                        ModelState.AddModelError("Password", "user name must be uniqe");
+                        ModelState.AddModelError("Password", "Email  must be uniqe");
                     }
                     else
                     {
-                        ModelState.AddModelError("Password", "Email name must be uniqe");
+                        ModelState.AddModelError("Password", "User name must be uniqe");
                     }
                 }
             }
@@ -134,13 +136,13 @@ namespace LaptopShop.Controllers
                     }
                     else
                     {
-                        _logger.LogError("{username} invild passwoerd", login.Username);
+                        _logger.LogInformation("{username} invild passwoerd", login.Username);
                         ModelState.AddModelError("", "invild passwoerd");
                     }
                 }
                 else
                 {
-                    _logger.LogError("invild username");
+                    _logger.LogInformation("invild username");
                     ModelState.AddModelError("", "invild username");
 
                 }
@@ -206,6 +208,7 @@ namespace LaptopShop.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId ,int code)
         {
+            ViewBag.IsSuccess = false;
             string key = userId;
             if (_Cache.TryGetValue(key, out int _cachecode))
             {
@@ -246,6 +249,7 @@ namespace LaptopShop.Controllers
                 RegUser.UserName = user.UserName;
                 RegUser.PasswordHash = user.Password;
                 RegUser.EmailConfirmed = true;
+                ViewBag.IsSuccess = true;
                 ViewBag.Message = "Thank you for confirming your email";
                 await UserManager.CreateAsync(RegUser, user.Password);
               
